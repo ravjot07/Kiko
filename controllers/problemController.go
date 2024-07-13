@@ -12,7 +12,7 @@ import (
 
 func GetProblems(c *gin.Context) {
 	var problems []models.Problem
-	cursor, err := utils.Client.Database("reactPractice").Collection("problems").Find(context.Background(), bson.M{})
+	cursor, err := utils.Client.Database("kiko").Collection("problems").Find(context.Background(), bson.M{})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
