@@ -12,21 +12,20 @@ import (
 var Client *mongo.Client
 
 func ConnectDatabase(uri string) {
-	log.Printf("Connecting to MongoDB with URI: %s", uri)
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
-		log.Fatalf("Failed to create new MongoDB client: %v", err)
+		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Fatalf("Failed to connect to MongoDB: %v", err)
+		log.Fatal(err)
 	}
 
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatalf("Failed to ping MongoDB: %v", err)
+		log.Fatal(err)
 	}
 
 	log.Println("Connected to MongoDB!")

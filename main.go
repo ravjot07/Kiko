@@ -11,23 +11,19 @@ import (
 )
 
 func main() {
-	// Load environment variables
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	// Get the MongoDB URI from the environment variable
-	mongoURI := os.Getenv("MONGO_URI")
-	if mongoURI == "" {
-		log.Fatal("MONGO_URI environment variable is required")
-	}
+	// Set Gin to release mode in production
+	gin.SetMode(gin.ReleaseMode)
 
-	// Connect to MongoDB
-	utils.ConnectDatabase(mongoURI)
-
-	// Set up Gin router
 	router := gin.Default()
+
+	// Connect to the database
+	mongoURI := os.Getenv("MONGO_URI")
+	utils.ConnectDatabase(mongoURI)
 
 	// Register routes
 	routes.RegisterProblemRoutes(router)

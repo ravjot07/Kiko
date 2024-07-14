@@ -8,7 +8,14 @@ WORKDIR /usr/src/app
 RUN echo '{ "type": "module" }' > package.json
 
 # Install necessary dependencies
-RUN npm install react react-dom
+RUN npm install react react-dom @testing-library/react @testing-library/jest-dom @babel/preset-env @babel/preset-react jest babel-jest jest-environment-jsdom
 
-# Command to run the user's code
-CMD ["node", "run_user_code.js"]
+# Copy Babel and Jest configurations
+COPY .babelrc /usr/src/app/.babelrc
+COPY jest.config.js /usr/src/app/jest.config.js
+
+# Copy the user code and test files
+COPY . .
+
+# Command to run the user's code and tests
+CMD ["npx", "jest", "--config", "/usr/src/app/jest.config.js"]
